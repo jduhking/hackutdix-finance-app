@@ -1,18 +1,11 @@
 const axios = require("axios");
 
-async function GetData(field) {
-  axios
-    .get(
-      "https://order-consist-lived-template.trycloudflare.com/history/?ticker=AAPL&period=1y"
-    )
-    .then(function (response) {
-      for (const [key, value] of Object.entries(response)) {
-        console.log(key, value);
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+async function GetStandardDeviation() {
+  const res = await axios.get(
+    "https://order-consist-lived-template.trycloudflare.com/history/?ticker=AAPL&period=1y"
+  );
+
+  return res.data["standard_deviation"].Close;
 }
 
 module.exports = function (router) {
@@ -25,22 +18,20 @@ async function GetRisk(req, res) {
   try {
     if (req.body == null) throw "No data found";
 
-    GetData();
-
     // get standard deviation from python server
 
-    /*const stdDev = GetData;
+    stdDev = await GetStandardDeviation();
 
+    console.log(stdDev);
 
+    // Calculate the volatility
 
-    const volatility = stdDev * Math.sqrt(req.body.time);
-    */
-    const volatility = 10;
+    // const volatility = stdDev * Math.sqrt(req.body.timePeriod);
 
-    const message =
-      "The volatility is : " + (volatility > 0.15 ? "HIGH" : "LOW");
+    // const message =
+    // "The volatility is : " + (volatility > 0.15 ? "HIGH" : "LOW");
 
-    return res.status(200).json({ m: volatility });
+    return res.status(200).json({ m: "hey" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ e: error });
