@@ -50,7 +50,7 @@ async function GetStocks(req, res) {
 
   try {
     // Get the stocks profile
-    const results = await res.send(GetHistory(ticker));
+    const results = await res.send(await GetHistory(ticker));
 
     return res.json(results);
 
