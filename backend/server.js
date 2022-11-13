@@ -6,7 +6,11 @@ dotenv.config({ path: __dirname + "/.env" });
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cookieParser());
 app.use(cors());
 
-app.listen(3000);
+const routes = require("./routes")(express);
+app.use(routes);
+
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on port ${process.env.PORT}`);
+});
