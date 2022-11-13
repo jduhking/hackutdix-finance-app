@@ -51,6 +51,7 @@ useEffect(()=>{
     <View >
       <Text>Bezier Line Chart</Text>
       <LineChart
+      withDots={false}
         data={{
           datasets: [
             {
@@ -85,8 +86,8 @@ useEffect(()=>{
         }}
       />
   <View style={{flexDirection: "row", width:"100%", justifyContent:"space-evenly"}}>
-        <Button title="1w" onPress={()=>setTime("1w")}/>
-        <Button title="1m" onPress={()=>setTime("1m")}/>
+        <Button title="1w" onPress={()=>setTime("1wk")}/>
+        <Button title="1m" onPress={()=>setTime("1mo")}/>
         <Button title="1y" onPress={()=>setTime("1y")}/>
         <Button title="5y" onPress={()=>setTime("5y")}/>
       </View> 
