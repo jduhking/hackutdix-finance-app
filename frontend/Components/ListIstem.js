@@ -5,7 +5,6 @@ import {AntDesign} from '@expo/vector-icons'
 import colors from './colors';
 
 
-
 function ListItem({onpress, Data, handleAdd}){
 
     return(
