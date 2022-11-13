@@ -52,7 +52,7 @@ function HomeScreen({navigation}){
                 console.log(e)
             }
             axios({
-                method:'post',
+                method:'post'
                 url:'',
                 data:{
                     username:user.username,
