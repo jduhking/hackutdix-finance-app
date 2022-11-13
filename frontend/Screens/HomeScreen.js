@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {View,Text,TextInput, StyleSheet, FlatList, StatusBar} from 'react-native';
+import {View,Text,TextInput, StyleSheet, FlatList, StatusBar,ActivityIndicator} from 'react-native';
 import Constants from 'expo-constants';
 import colors from '../Components/colors';
 import { dropdownData, topMovers } from '../DummyData.js/searchData';
@@ -7,18 +7,42 @@ import { validateYupSchema } from 'formik';
 import ListSeperator from '../Components/ListSeperator';
 import ListItem from '../Components/ListIstem';
 import MoversComponent from '../Components/MoversComponent';
+import axios from 'axios';
+import AppActivityIndicator from '../Components/AppActivityIndicator';
 
 
-function HomeScreen(props){
+function HomeScreen({navigation}){
 
-    const [menuData, setMenuData] = useState(dropdownData);
+    const [menuData, setMenuData] = useState([]);
     const [movers, setMovers] = useState(topMovers)
     const [showList, setShowList] = useState();
+    const [isLoading, setIsLoading] = useState();
+    const [noStock, setNostock] = useState();
+    const [portfolio, setPortfolio] = useState([]);
 
     const handleSearch = (text) => {
-        console.log(text)
+        axios({
+            method:'get',
+            url:`https://hackutdix-finance-app-production.up.railway.app/search?q=${text}`,
+            responseType:'json'
+        })
+        .then(function(response) {
+           setMenuData(response.data.suggest['stock-suggest'][0].options)
+           setIsLoading(false)
+
+           if (!response.data.suggest['stock-suggest'][0].options.length) setNostock(true)
+           if (response.data.suggest['stock-suggest'][0].options.length) setNostock(false)
+        })
+        .catch(function(error) {
+            console.log(error)
+        })
+
         if(text.length) setShowList(true)
         if(!text.length) setShowList(false)
+    }
+
+    const addStock = () => {
+        
     }
 
 
@@ -29,15 +53,16 @@ function HomeScreen(props){
                 <TextInput
                     onChangeText={handleSearch}
                     placeholder={'Search Stock...'}
+                    clearButtonMode={true}
                 />
             </View>
             <View style={styles.innerView}>
                 {!showList && 
-                    <View style={{width:'100%', height:'100%', alignItems:'center', paddingTop: Constants.statusBarHeight }}> 
-                        <Text style={{fontWeight:'700', fontSize:25}}>Top Performers</Text>
+                    <View style={{width:'100%', height:'100%', paddingTop: Constants.statusBarHeight }}> 
+                        <Text style={{fontWeight:'700', fontSize:25, marginLeft:'25%'}}>Top Performers</Text>
                         <FlatList
                             data={movers}
-                            renderItem={({item}) => <MoversComponent Data={item}/>}
+                            renderItem={({item}) => <MoversComponent Data={item} onpress={()=> navigation.navigate('Details')}/>}
                             keyExtractor={(item) => item.id}
                             showsVerticalScrollIndicator={false}
                         />
@@ -46,14 +71,18 @@ function HomeScreen(props){
                 {
                     showList &&
 
-                        <FlatList
-                            data={menuData}
-                            renderItem={({item}) => <ListItem Data={item}/>}
-                            keyExtractor={(item) => item.id}
-                            ItemSeparatorComponent={ListSeperator}
-                            showsVerticalScrollIndicator={false}
-
-                        />
+                        <>
+                            <AppActivityIndicator animating={isLoading}/>
+                            <View style={{marginTop:-30}}/>
+                            {noStock && <Text style={styles.emptyArray}>No stocks mactch 😞</Text>}
+                            <FlatList
+                                data={menuData}
+                                renderItem={({item}) => <ListItem Data={item} onpress={()=> navigation.navigate('Details')}/>}
+                                keyExtractor={(item) => item.id}
+                                ItemSeparatorComponent={ListSeperator}
+                                showsVerticalScrollIndicator={false}
+                            />
+                        </>
                 }
             </View>
         </View>
@@ -84,6 +113,10 @@ const styles = StyleSheet.create({
         backgroundColor:colors.sage,
         marginTop:Constants.statusBarHeight,
         zIndex:1
+    },
+    emptyArray: {
+        marginLeft:'30%',
+        color:'#8F8F8F'
     }
 
 })
