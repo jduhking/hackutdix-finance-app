@@ -7,9 +7,12 @@ npm-debug.*
 *.p8
 *.p12
 *.key
+.env
 *.mobileprovision
 *.orig.*
 web-build/
+stock-api/venv
+stock-api/__pycache__
 
 # macOS
 .DS_Store
