@@ -30,7 +30,7 @@ async function GetIcon() {
 
 async function GetHistory(ticker, time) {
   const res = await axios.get(
-    `${process.env.STOCK_HOST}/history?ticker=${ticker}&time=${time}`
+    `${process.env.STOCK_HOST}/history?ticker=${ticker}&period=${time}`
   );
 
   data = res.data;
