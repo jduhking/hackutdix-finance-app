@@ -17,7 +17,7 @@ async def root(ticker: str):
 @app.get("/history/")
 async def history(ticker: str, period: str = "1wk"):
     appl = yf.Ticker(ticker)
-    history = appl.history(period=period)
+    history = appl.history(period=period).dropna()
     
  
     return {

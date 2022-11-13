@@ -4,6 +4,7 @@ import ScreenNavigator from './Navigators/ScreenNavigators';
 import { NativeModules } from 'react-native'; 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AccountScreen from './Screens/AccountScreen';
+import AnalysisScreen from './Screens/AnalysisScreen';
 import AdvisorScreen from './Screens/AdvisorScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import {Fontisto, Entypo, MaterialCommunityIcons} from '@expo/vector-icons';
@@ -19,6 +20,7 @@ export default function App() {
         <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#00BCD4" translucent = {true}/>
         <NavigationContainer>
           <Tab.Navigator screenOptions={{headerShown:false}}>
+            <Tab.Screen name='Analysis' component={AnalysisScreen} />
             <Tab.Screen 
               name="Home" 
               component={ScreenNavigator}

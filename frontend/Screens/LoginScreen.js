@@ -5,13 +5,41 @@ import AppButton from '../Components/AppButton';
 import { Formik } from 'formik';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import axios from 'axios';
+
+const [loginState, setLoginState]
 
 function LoginScreen({navigation}){
+
+    const storeData = async (value) => {
+        try {
+          const jsonValue = JSON.stringify(value)
+          await AsyncStorage.setItem('@storage_Key', jsonValue)
+        } catch (e) {
+          // saving error
+        }
+      }
+
+    const loginSubmit = (credentials) => {
+        axios({
+            method:'get',
+            url:'https://hackutdix-finance-app-production.up.railway.app/auth',
+            responseType:'json',
+            data:credentials
+        })
+        .then(function(response) {
+            if (response.status == 200 || response.status == 201)storeData(credentials)
+        })
+        .catch(function(error) {
+            console.log(error)
+        })
+
+    }
     return(
         <View>
             <Formik
                 initialValues={{username: '', password: ''}}
-                onSubmit={ ()=> navigation.navigate('Home')}
+                onSubmit={(values)=> loginSubmit(values)}
             >
                 {({handleChange, handleBlur, handleSubmit, values}) => (
                     <View style={styles.container}>

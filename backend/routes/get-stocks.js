@@ -16,12 +16,28 @@ const stockProfiles = {
     },
   ],
 };
-function GetStockProfiles() {
-  /*const res = await axios.get(
-    "https://order-consist-lived-template.trycloudflare.com/profile/?ticker=TSLA&period=2y"
-  );*/
+async function GetTicker() {
+  const res = await axios.get();
 
   return stockProfiles;
+}
+
+async function GetIcon() {
+  const res = await axios.get();
+
+  return stockProfiles;
+}
+
+async function GetHistory(ticker) {
+  const res = await axios.get(
+    `${process.env.STOCK_HOST}/history?ticker=${ticker}`
+  );
+
+  data = res.data;
+
+  console.log(data);
+
+  return data;
 }
 
 module.exports = function (router) {
@@ -29,15 +45,18 @@ module.exports = function (router) {
 };
 
 async function GetStocks(req, res) {
-  console.log("Retreiving profiles");
-
+  const { ticker } = req.query;
+  if (!ticker) return res.status(400).json({ error: "No query provided" });
+  console.log(res);
   try {
     // Get the stocks profile
-
-    const stocks = GetStockProfiles();
-
-    return res.status(200).json({ m: stocks });
+    const results = await res.json(await GetHistory(ticker));
   } catch (error) {
+    console.log(error);
+    if (!res.headersSent) {
+      return res.status(500).json({ error: error.message || "Server Error" });
+    }
+
     console.log(error);
     return res.status(400).json({ e: error });
   }

@@ -9,6 +9,7 @@ import ListItem from '../Components/ListIstem';
 import MoversComponent from '../Components/MoversComponent';
 import axios from 'axios';
 import AppActivityIndicator from '../Components/AppActivityIndicator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function HomeScreen({navigation}){
@@ -19,6 +20,7 @@ function HomeScreen({navigation}){
     const [isLoading, setIsLoading] = useState();
     const [noStock, setNostock] = useState();
     const [portfolio, setPortfolio] = useState([]);
+    const [user, SetUser] = useState("");
 
     const handleSearch = (text) => {
         axios({
@@ -41,8 +43,30 @@ function HomeScreen({navigation}){
         if(!text.length) setShowList(false)
     }
 
-    const addStock = () => {
-        
+    const addStock = (tickr) => {
+        const getData = async () => {
+            try{
+                const jsonValue = await AsyncStorage.getItem('@storage_key')
+                return jsonValue != null ? SetUser(JSON.stringify(jsonValue)): null;
+            }catch (e) {
+                console.log(e)
+            }
+            axios({
+                method:'post',
+                url:'',
+                data:{
+                    username:user.username,
+                    password:user.password,
+                    ticker: tickr
+                }
+            })
+            .then(function(response) {
+    
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
+        }
     }
 
 
@@ -77,7 +101,7 @@ function HomeScreen({navigation}){
                             {noStock && <Text style={styles.emptyArray}>No stocks mactch 😞</Text>}
                             <FlatList
                                 data={menuData}
-                                renderItem={({item}) => <ListItem Data={item} onpress={()=> navigation.navigate('Details')}/>}
+                                renderItem={({item}) => <ListItem Data={item} onpress={()=> navigation.navigate('Details')} handleAdd={addStock(item._source.ticker)}/>}
                                 keyExtractor={(item) => item.id}
                                 ItemSeparatorComponent={ListSeperator}
                                 showsVerticalScrollIndicator={false}
