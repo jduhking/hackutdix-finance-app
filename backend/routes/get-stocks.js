@@ -28,9 +28,9 @@ async function GetIcon() {
   return stockProfiles;
 }
 
-async function GetHistory(ticker) {
+async function GetHistory(ticker, time) {
   const res = await axios.get(
-    `${process.env.STOCK_HOST}/history?ticker=${ticker}`
+    `${process.env.STOCK_HOST}/history?ticker=${ticker}&time=${time}`
   );
 
   data = res.data;
