@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState} from 'react';
 import {View,Text,TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import Seperator from '../Components/Seperators';
 import AppButton from '../Components/AppButton';
@@ -7,9 +7,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 
-const [loginState, setLoginState]
-
 function LoginScreen({navigation}){
+
+    const [loginAllowed, setLoginAllowed] = useState(null);
 
     const storeData = async (value) => {
         try {
@@ -21,14 +21,21 @@ function LoginScreen({navigation}){
       }
 
     const loginSubmit = (credentials) => {
+        console.log(credentials)
         axios({
-            method:'get',
+            method:'post',
             url:'https://hackutdix-finance-app-production.up.railway.app/auth',
             responseType:'json',
             data:credentials
         })
         .then(function(response) {
-            if (response.status == 200 || response.status == 201)storeData(credentials)
+            if (response.status == 200 || response.status == 201)
+            {
+                storeData(credentials)
+                setLoginAllowed(true)
+                navigation.navigate('Home')
+            }
+            else setLoginAllowed(false)
         })
         .catch(function(error) {
             console.log(error)
@@ -62,6 +69,7 @@ function LoginScreen({navigation}){
                         </View>
                         <Seperator marginTop={20}/>
                         <AppButton text={'GET STARTED'} onPress={handleSubmit}/>
+                        {!loginAllowed && <Text style={{marginTop:7}}>Username or Password is incorrect</Text>}
 
                     </View>
                 )}

@@ -7,8 +7,8 @@ function MoversComponent({Data,onpress}){
         <Pressable onPress={onpress} style={styles.container}>
             <View style={{justifyContent:'space-between', width:'80%', backgroundColor:'white', marginTop:30, flexDirection:'row', alignItems:'center', paddingHorizontal:20, height:60, borderRadius:15, shadowColor:colors.pink, shadowOpacity:0.8, shadowRadius:15}}>
                 <View>
-                    <Text style={{fontSize:15, fontWeight:'600'}}>{Data.stock}</Text>
-                    <Text style={{ fontWeight:'300'}}>{Data.tickr}</Text>
+                    <Text style={{fontSize:15, fontWeight:'600'}}>{Data._source.name}</Text>
+                    <Text style={{ fontWeight:'300'}}>{Data._source.ticker}</Text>
                 </View>
                 <View style={{flexDirection:'row', alignItems:'center'}}>
                     <Foundation name="arrow-up" size={30} color={colors.green} />

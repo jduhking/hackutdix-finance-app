@@ -20,7 +20,7 @@ function HomeScreen({navigation}){
     const [isLoading, setIsLoading] = useState();
     const [noStock, setNostock] = useState();
     const [portfolio, setPortfolio] = useState([]);
-    const [user, SetUser] = useState("");
+    const [user, SetUser] = useState({});
 
     const handleSearch = (text) => {
         axios({
@@ -47,13 +47,13 @@ function HomeScreen({navigation}){
         const getData = async () => {
             try{
                 const jsonValue = await AsyncStorage.getItem('@storage_key')
-                return jsonValue != null ? SetUser(JSON.stringify(jsonValue)): null;
+                return jsonValue != null ? SetUser(JSON.parse(jsonValue)): SetUser({});
             }catch (e) {
                 console.log(e)
             }
             axios({
-                method:'post'
-                url:'',
+                method:'post',
+                url:'https://hackutdix-finance-app-production.up.railway.app/portfolio',
                 data:{
                     username:user.username,
                     password:user.password,
@@ -86,7 +86,7 @@ function HomeScreen({navigation}){
                         <Text style={{fontWeight:'700', fontSize:25, marginLeft:'25%'}}>Top Performers</Text>
                         <FlatList
                             data={movers}
-                            renderItem={({item}) => <MoversComponent Data={item} onpress={()=> navigation.navigate('Details')}/>}
+                            renderItem={({item}) => <MoversComponent Data={item} onpress={()=> navigation.navigate('Details',item)}/>}
                             keyExtractor={(item) => item.id}
                             showsVerticalScrollIndicator={false}
                         />
@@ -101,7 +101,7 @@ function HomeScreen({navigation}){
                             {noStock && <Text style={styles.emptyArray}>No stocks mactch 😞</Text>}
                             <FlatList
                                 data={menuData}
-                                renderItem={({item}) => <ListItem Data={item} onpress={()=> navigation.navigate('Details')} handleAdd={addStock(item._source.ticker)}/>}
+                                renderItem={({item}) => <ListItem Data={item} onpress={()=> navigation.navigate('Details',item)} handleAdd={addStock(item._source.ticker)}/>}
                                 keyExtractor={(item) => item.id}
                                 ItemSeparatorComponent={ListSeperator}
                                 showsVerticalScrollIndicator={false}
