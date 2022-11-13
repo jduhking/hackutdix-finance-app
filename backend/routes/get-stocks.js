@@ -50,7 +50,7 @@ async function GetStocks(req, res) {
   console.log(res);
   try {
     // Get the stocks profile
-    const results = await res.json(await GetHistory(ticker, timer));
+    const results = await res.json(await GetHistory(ticker, time));
   } catch (error) {
     console.log(error);
     if (!res.headersSent) {

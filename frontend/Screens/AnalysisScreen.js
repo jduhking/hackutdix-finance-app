@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   StyleSheet,
+  Button,
   useWindowDimensions,
 } from "react-native";
 import {
@@ -17,12 +18,13 @@ import {
 
 const axios = require("axios").default;
 
-async function GetGraphHistory(ticker) {
+async function GetGraphHistory(ticker, time) {
+const url = `${"https://hackutdix-finance-app-production.up.railway.app"}/get-stocks?ticker=${ticker}&time=${time}`
   console.log(
-    `${"https://hackutdix-finance-app-production.up.railway.app"}/get-stocks?ticker=${"AAPL"}`
+   {url}
   );
   const res = await axios.get(
-    `${"https://hackutdix-finance-app-production.up.railway.app"}/get-stocks?ticker=${ticker}`
+    url
   );
 
   // console.log(res.data);
@@ -33,18 +35,18 @@ async function GetGraphHistory(ticker) {
 function AnalysisScreen({ navigation }) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const [nums, setNums] = useState([1])
-  
+  const [time, setTime] = useState("1w")
 
 useEffect(()=>{
   const data = async function()
   {
-   const data2 = await GetGraphHistory("GOOGL");
+    const data2 = await GetGraphHistory("GOOGL", time);
    console.log(data2.history_data)
    const history = Object.values(data2.history_data).map((e)=>e.Close);
    console.log(history);
    setNums(history)
   }()
-},[])
+},[time])
   return (
     <View >
       <Text>Bezier Line Chart</Text>
@@ -82,6 +84,12 @@ useEffect(()=>{
           borderRadius: 16,
         }}
       />
+  <View style={{flexDirection: "row", width:"100%", justifyContent:"space-evenly"}}>
+        <Button title="1w" onPress={()=>setTime("1w")}/>
+        <Button title="1m" onPress={()=>setTime("1m")}/>
+        <Button title="1y" onPress={()=>setTime("1y")}/>
+        <Button title="5y" onPress={()=>setTime("5y")}/>
+      </View> 
     </View>
   );
 }
