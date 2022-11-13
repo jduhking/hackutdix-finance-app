@@ -16,8 +16,6 @@ async function GetRisk(req, res) {
   console.log(`Get data used to calculate risk for ${req.body.name} `);
 
   try {
-    if (req.body == null) throw "No data found";
-
     // get standard deviation from python server
 
     stdDev = await GetStandardDeviation(req.query.ticker, req.query.time);
@@ -25,12 +23,25 @@ async function GetRisk(req, res) {
     console.log(stdDev);
 
     // Calculate the volatility
-
-    const volatility = stdDev * Math.sqrt(365 / req.body.timePeriod);
+    let timePeriod;
+    switch (req.query.time) {
+      case '1mo':
+        timePeriod = 30;
+        break;
+      case '1y':
+        timePeriod = 365;
+        break;
+      case '5y':
+        timePeriod = 1825;
+        break;
+      default:
+        timePeriod = 7;
+    }
+    const volatility = stdDev * Math.sqrt(365 / timePeriod);
 
     console.log(volatility);
 
-    const message = "The volatility is : " + (volatility > 15 ? "HIGH" : "LOW");
+    const message = "The volatility is: " + (volatility > 15 ? "HIGH" : "LOW");
 
     return res.status(200).json({ m: message, volatility: volatility });
   } catch (error) {
