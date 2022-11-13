@@ -8,7 +8,7 @@ app = FastAPI()
 
 
 
-@app.get("/stock/")
+@app.get("/profile/")
 async def root(ticker: str):
     appl = yf.Ticker(ticker)
     pprint.pprint(appl.history(period="max"))
@@ -21,7 +21,7 @@ async def history(ticker: str, period: str = "1wk"):
     
  
     return {
-        "history_data": history.to_dict("records"),
+        "history_data": history.to_dict("index"),
         "variance": history.var(),
         "standard_deviation": history.std()
     }
