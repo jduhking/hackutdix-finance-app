@@ -28,9 +28,9 @@ async function GetIcon() {
   return stockProfiles;
 }
 
-async function GetHistory(ticker) {
+async function GetHistory(ticker, time) {
   const res = await axios.get(
-    `${process.env.STOCK_HOST}/history?ticker=${ticker}`
+    `${process.env.STOCK_HOST}/history?ticker=${ticker}&period=${time}`
   );
 
   data = res.data;
@@ -45,12 +45,12 @@ module.exports = function (router) {
 };
 
 async function GetStocks(req, res) {
-  const { ticker } = req.query;
+  const { ticker, time } = req.query;
   if (!ticker) return res.status(400).json({ error: "No query provided" });
   console.log(res);
   try {
     // Get the stocks profile
-    const results = await res.json(await GetHistory(ticker));
+    const results = await res.json(await GetHistory(ticker, time));
   } catch (error) {
     console.log(error);
     if (!res.headersSent) {
