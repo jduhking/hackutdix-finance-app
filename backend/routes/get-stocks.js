@@ -33,11 +33,11 @@ async function GetHistory(ticker) {
     `${process.env.STOCK_HOST}/history?ticker=${ticker}`
   );
 
-  data = Object.values(response.data);
+  data = Object.values(res.data);
 
   console.log(data);
 
-  return 1;
+  return data;
 }
 
 module.exports = function (router) {
@@ -47,17 +47,14 @@ module.exports = function (router) {
 async function GetStocks(req, res) {
   const { ticker } = req.query;
   if (!ticker) return res.status(400).json({ error: "No query provided" });
-
+  console.log(res);
   try {
     // Get the stocks profile
-    const results = await res.send(await GetHistory(ticker));
-
-    return res.json(results);
-
-    return res.status(200).json({ m: stocks });
+    const results = await res.json(await GetHistory(ticker));
   } catch (error) {
+    console.log(error);
     if (!res.headersSent) {
-      return res.status(500).json({ error: err.message || "Server Error" });
+      return res.status(500).json({ error: error.message || "Server Error" });
     }
 
     console.log(error);
