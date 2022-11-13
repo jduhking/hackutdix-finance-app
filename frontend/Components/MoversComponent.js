@@ -5,7 +5,7 @@ import colors from './colors';
 function MoversComponent({Data,onpress}){
     return(
         <Pressable onPress={onpress} style={styles.container}>
-            <View style={{justifyContent:'space-between', width:'80%', backgroundColor:'white', marginTop:30, flexDirection:'row', alignItems:'center', paddingHorizontal:20, height:60, borderRadius:15, shadowColor:colors.pink, shadowOpacity:0.4, shadowRadius:15}}>
+            <View style={{justifyContent:'space-between', width:'80%', backgroundColor:'white', marginTop:30, flexDirection:'row', alignItems:'center', paddingHorizontal:20, height:60, borderRadius:15, shadowColor:colors.pink, shadowOpacity:0.8, shadowRadius:15}}>
                 <View>
                     <Text style={{fontSize:15, fontWeight:'600'}}>{Data.stock}</Text>
                     <Text style={{ fontWeight:'300'}}>{Data.tickr}</Text>
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         width:'100%',
         height: 70,
         alignItems:'center',
+        marginBottom:12
     }
 })
 
