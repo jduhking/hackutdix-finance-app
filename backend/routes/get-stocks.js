@@ -33,7 +33,7 @@ async function GetHistory(ticker) {
     `${process.env.STOCK_HOST}/history?ticker=${ticker}`
   );
 
-  data = Object.values(res.data);
+  data = res.data;
 
   console.log(data);
 
