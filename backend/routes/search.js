@@ -14,7 +14,7 @@ const search = async (query) => {
                 completion: {
                     field: "name.completion",
                     fuzzy: {
-                        fuzziness: 2
+                        fuzziness: 0.5
                     }
                 }
             }
