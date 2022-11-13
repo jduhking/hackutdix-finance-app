@@ -12,9 +12,9 @@ const dropdownData = [
 ];
 
 const topMovers = [
-    {id: '1', _source: {ticker: 'APPL',name: 'Apple inc'}, direction:'down', priceChange: '30'},
+    {id: '1', _source: {ticker: 'AAPL',name: 'Apple inc'}, direction:'down', priceChange: '30'},
     {id: '2', _source: {ticker: 'PG', name: 'Proctor and Gamble'}, direction:'up', priceChange:'21'},
-    {id: '3', _source: {ticker: 'ALPHA', name: 'Google', direction:'up'}, priceChange:'24'},
+    {id: '3', _source: {ticker: 'GOOGL', name: 'Google', direction:'up'}, priceChange:'24'},
     {id: '4', _source: {ticker: 'META', name: 'Facebok', direection:'up'}, priceChange:'56'},
     {id: '5', _source: {ticker: 'SNAP', name:'Snapchat', direction:'up'}, priceChange: '54'}
 ]

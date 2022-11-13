@@ -69,7 +69,7 @@ function LoginScreen({navigation}){
                         </View>
                         <Seperator marginTop={20}/>
                         <AppButton text={'GET STARTED'} onPress={handleSubmit}/>
-                        {!loginAllowed && <Text style={{marginTop:7}}>Username or Password is incorrect</Text>}
+                        {loginAllowed ? <Text style={{marginTop:7}}>Username or Password is incorrect</Text> : null}
 
                     </View>
                 )}
