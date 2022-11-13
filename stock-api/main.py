@@ -19,8 +19,9 @@ async def history(ticker: str, period: str = "1wk"):
     appl = yf.Ticker(ticker)
     history = appl.history(period=period)
     
-
-    
+ 
     return {
-        "message": history.to_dict("index")
+        "history_data": history.to_dict("records"),
+        "variance": history.var(),
+        "standard_deviation": history.std()
     }
