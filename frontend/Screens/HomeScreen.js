@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {View,Text,TextInput, StyleSheet, FlatList} from 'react-native';
+import {View,Text,TextInput, StyleSheet, FlatList, StatusBar} from 'react-native';
 import Constants from 'expo-constants';
 import colors from '../Components/colors';
 import { dropdownData, topMovers } from '../DummyData.js/searchData';
@@ -36,7 +36,7 @@ function HomeScreen(props){
                     <View style={{width:'100%', height:'100%', alignItems:'center', paddingTop: Constants.statusBarHeight }}> 
                         <Text style={{fontWeight:'700', fontSize:25}}>Top Performers</Text>
                         <FlatList
-                            Data={movers}
+                            data={movers}
                             renderItem={({item}) => <MoversComponent Data={item}/>}
                             keyExtractor={(item) => item.id}
                             showsVerticalScrollIndicator={false}
