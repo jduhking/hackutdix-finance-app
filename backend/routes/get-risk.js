@@ -1,8 +1,8 @@
 const axios = require("axios");
 
-async function GetStandardDeviation() {
+async function GetStandardDeviation(ticker, time) {
   const res = await axios.get(
-    "https://order-consist-lived-template.trycloudflare.com/history/?ticker=TSLA&period=2y"
+    `https://radioactive-ring-production.up.railway.app/history/?ticker=${ticker}&period=${time}`
   );
 
   return res.data["standard_deviation"].Close;
@@ -20,7 +20,7 @@ async function GetRisk(req, res) {
 
     // get standard deviation from python server
 
-    stdDev = await GetStandardDeviation();
+    stdDev = await GetStandardDeviation(req.query.ticker, req.query.time);
 
     console.log(stdDev);
 
@@ -32,7 +32,7 @@ async function GetRisk(req, res) {
 
     const message = "The volatility is : " + (volatility > 15 ? "HIGH" : "LOW");
 
-    return res.status(200).json({ m: message });
+    return res.status(200).json({ m: message, volatility: volatility });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ e: error });
