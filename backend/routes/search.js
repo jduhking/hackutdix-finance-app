@@ -5,15 +5,20 @@ const client = new Client({
 })
 
 const search = async (query) => {
-    const body = {
-        "query": {
-            "match_phrase": {
-                "message": query
-            }
-        }
-    }
     
-    const out = await client.search(body)
+    const out = await client.search({
+        index: "stock",
+        suggest: {
+            "stock-suggest": {
+                prefix: query,
+                completion: {
+                    field: "name.completion",
+                    fuzzy: {
+                        fuzziness: 0.5
+                    }
+                }
+            }
+    }})
     return out
 }
 
